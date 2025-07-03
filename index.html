@@ -229,11 +229,11 @@
     const questions = document.querySelectorAll('.question');
     const progressBar = document.getElementById('progressBar');
     let currentQuestion = 0;
-
+    
     button.addEventListener('click', () => {
       quizModal.style.display = 'flex';
     });
-
+    
     function closeQuiz() {
       quizModal.style.display = 'none';
       currentQuestion = 0;
@@ -241,7 +241,7 @@
       questions[0].classList.add('active');
       progressBar.style.width = '0%';
     }
-
+    
     const nextButtons = document.querySelectorAll('.next-button');
     nextButtons.forEach((btn, index) => {
       btn.addEventListener('click', () => {
@@ -258,12 +258,39 @@
         }
       });
     });
-
-    quizForm.addEventListener('submit', (e) => {
+    
+    // ✅ HERE is the data submission part:
+    quizForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      alert("Thank you! We’ll match you with an ambassador soon.");
-      closeQuiz();
+    
+      const data = {
+        name: quizForm.querySelector('input[type="text"]').value,
+        email: quizForm.querySelector('input[type="email"]').value,
+        location: quizForm.querySelectorAll('select')[0].value,
+        studyPlan: quizForm.querySelectorAll('select')[1].value,
+        biggestQuestion: quizForm.querySelectorAll('select')[2].value,
+        chatPreference: quizForm.querySelectorAll('select')[3].value,
+      };
+    
+      try {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbx7cCc-CXhXpo-06OOy51YYMR-z9swxoBc_wIbgwNhkcdMLFtIuTLT-9urVcnXUVNM-/exec', {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: { 'Content-Type': 'application/json' },
+        });
+    
+        const result = await response.json();
+        if (result.result === 'success') {
+          alert("Thanks! Your response has been submitted.");
+          closeQuiz();
+        } else {
+          alert("Error! Please try again later.");
+        }
+      } catch (err) {
+        alert("Failed to send data: " + err.message);
+      }
     });
+
     
   </script>
 </body>
