@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find Your Ambassador Match!</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+
+    .background-collage {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 0;
+      z-index: -1;
+    }
+
+    .background-collage img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.7);
+    }
+
+    .match-button {
+      background-color: #6a0dad; /* Knox Purple */
+      color: white;
+      border: none;
+      padding: 20px 40px;
+      font-size: 24px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .match-button:hover {
+      transform: scale(1.1);
+      background-color: #8b2c2c;
+    }
+
+    .quiz-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .quiz-content {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      text-align: center;
+      position: relative;
+    }
+
+    .progress-bar {
+      height: 10px;
+      background-color: #ddd;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .progress-bar-inner {
+      height: 100%;
+      background-color: #f5c518; /* Knox Gold/Yellow */
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+
+    .question {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .question.active {
+      display: block;
+      opacity: 1;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-top: 15px;
+    }
+
+    button.next-button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #f5c518; /* Knox Gold/Yellow */
+      color: black;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button.next-button:hover {
+      background-color: #f8d84c;
+    }
+
+    .quiz-content .close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      cursor: pointer;
+      font-size: 24px;
+    }
+  </style>
+</head>
+<body>
+  <div class="background-collage">
+    <img src="53982842352_f86df514b2_o.jpg" alt="Image 1">
+    <img src="54304411167_b042242b67_o.jpg" alt="Image 2">
+    <img src="54293685161_c305051a93_o.jpg" alt="Image 3">
+    <img src="54502226585_c615042a98_o.jpg" alt="Image 4">
+    <img src="54529461087_1d35b4449f_o.jpg" alt="Image 5">
+    <img src="54502226700_8673db5d65_o.jpg" alt="Image 6">
+  </div>
+
+  <button class="match-button">Find Your Ambassador Match!</button>
+
+  <div class="quiz-modal" id="quizModal">
+    <div class="quiz-content">
+      <span class="close" onclick="closeQuiz()">&times;</span>
+      <div class="progress-bar">
+        <div class="progress-bar-inner" id="progressBar"></div>
+      </div>
+
+      <form id="quizForm">
+        <div class="question active">
+          <h3>What's your name?</h3>
+          <input type="text" required placeholder="Enter your name">
+          <button type="button" class="next-button">Next</button>
+        </div>
+
+        <div class="question">
+          <h3>What's your email?</h3>
+          <input type="email" required placeholder="Enter your email">
+          <button type="button" class="next-button">Next</button>
+        </div>
+
+        <div class="question">
+          <h3>Where are you from?</h3>
+          <select required>
+            <option>Choose...</option>
+            <option>Africa</option>
+            <option>Asia</option>
+            <option>Europe</option>
+            <option>Middle East</option>
+            <option>North America</option>
+            <option>South America</option>
+            <option>Other</option>
+          </select>
+          <button type="button" class="next-button">Next</button>
+        </div>
+
+        <div class="question">
+          <h3>What do you plan to study?</h3>
+          <select required>
+            <option>Choose...</option>
+            <option>STEM</option>
+            <option>Business & Management</option>
+            <option>Arts & Humanities</option>
+            <option>Social Sciences</option>
+            <option>Undecided</option>
+          </select>
+          <button type="button" class="next-button">Next</button>
+        </div>
+
+        <div class="question">
+          <h3>What’s your biggest question about Knox?</h3>
+          <select required>
+            <option>Choose...</option>
+            <option>Campus Life & Clubs</option>
+            <option>Scholarships & Financial Aid</option>
+            <option>Academics & Professors</option>
+            <option>Internships & Jobs</option>
+            <option>Living in Galesburg</option>
+          </select>
+          <button type="button" class="next-button">Next</button>
+        </div>
+
+        <div class="question">
+          <h3>Pick your preferred way to chat:</h3>
+          <select required>
+            <option>Choose...</option>
+            <option>Email</option>
+            <option>Instagram DM</option>
+            <option>Zoom/Video Call</option>
+            <option>Text/WhatsApp</option>
+          </select>
+          <button type="submit" class="next-button">See My Match!</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const button = document.querySelector('.match-button');
+    const quizModal = document.getElementById('quizModal');
+    const quizForm = document.getElementById('quizForm');
+    const questions = document.querySelectorAll('.question');
+    const progressBar = document.getElementById('progressBar');
+    let currentQuestion = 0;
+
+    button.addEventListener('click', () => {
+      quizModal.style.display = 'flex';
+    });
+
+    function closeQuiz() {
+      quizModal.style.display = 'none';
+      currentQuestion = 0;
+      questions.forEach(q => q.classList.remove('active'));
+      questions[0].classList.add('active');
+      progressBar.style.width = '0%';
+    }
+
+    const nextButtons = document.querySelectorAll('.next-button');
+    nextButtons.forEach((btn, index) => {
+      btn.addEventListener('click', () => {
+        const current = questions[currentQuestion];
+        if (current.querySelector('input, select').checkValidity()) {
+          questions[currentQuestion].classList.remove('active');
+          currentQuestion++;
+          if (currentQuestion < questions.length) {
+            questions[currentQuestion].classList.add('active');
+            progressBar.style.width = ((currentQuestion) / (questions.length - 1)) * 100 + '%';
+          }
+        } else {
+          current.querySelector('input, select').reportValidity();
+        }
+      });
+    });
+
+    quizForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert("Thank you! We’ll match you with an ambassador soon.");
+      closeQuiz();
+    });
+    
+  </script>
+</body>
+</html>
